@@ -1,0 +1,4 @@
+import {create} from 'zustand';
+import {persist,createJSONStorage} from 'zustand/middleware';
+interface AppState { history:boolean; completed:boolean; experiment:boolean; experimentTitle:string; results:boolean; begun:boolean; theme:'light'|'dark'; set:(patch:Partial<AppState>)=>void; reset:()=>void }
+export const useAppStore=create<AppState>()(persist((set)=>({history:true,completed:false,experiment:false,experimentTitle:'',results:false,begun:false,theme:'light',set:(patch)=>set(patch),reset:()=>set({history:false,completed:false,experiment:false,experimentTitle:'',results:false,begun:false,theme:'light'})}),{name:'ekagra:v1',storage:createJSONStorage(()=>typeof window==='undefined'?{getItem:()=>null,setItem:()=>{},removeItem:()=>{}}:window.localStorage),partialize:(s)=>({history:s.history,completed:s.completed,experiment:s.experiment,experimentTitle:s.experimentTitle,results:s.results,begun:s.begun,theme:s.theme}) as AppState}));
